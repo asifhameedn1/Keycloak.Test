@@ -1,0 +1,16 @@
+# Local Keycloak for development: `docker compose up -d`
+# Admin console: http://localhost:8080 (admin / admin)
+# test-realm users: alice / alice (has "admin" role), bob / bob
+services:
+  keycloak:
+    image: keycloak/keycloak:26.8.2
+    container_name: keycloak-testapp
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    volumes:
+      # Imported on first start only; realm changes made in the admin console persist in the container.
+      - ./keycloak:/opt/keycloak/data/import:ro
